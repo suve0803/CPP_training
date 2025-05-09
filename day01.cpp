@@ -1,109 +1,91 @@
 #include <iostream>
-#include <sstream> // For stringstream
 using namespace std;
 
-// Utility function to convert string to double
-double stringToDouble(const string& str) {
-    stringstream ss(str);
-    double value;
-    ss >> value;
-    return value;
-}
+// Function to convert Binary to Decimal
+int binaryToDecimal(int binary) {
+    int decimal = 0, base = 1;
 
-// Function to handle triangle area calculation
-void calculateTriangle(int argc, char* argv[]) {
-    double base, height;
-    if (argc == 4) {
-        base = stringToDouble(argv[2]);
-        height = stringToDouble(argv[3]);
-    } else {
-        cout << "Enter base and height of the triangle: ";
-        cin >> base >> height;
+    while (binary > 0) {
+        int lastDigit = binary % 10; // Extract the last digit
+        decimal += lastDigit * base; // Add to the decimal value
+        base *= 2;                   // Increment the base (2^n)
+        binary /= 10;                // Remove the last digit
     }
-    cout << "Area of the triangle: " << 0.5 * base * height << endl;
+
+    return decimal;
 }
 
-// Function to handle rectangle area calculation
-void calculateRectangle(int argc, char* argv[]) {
-    double length, width;
-    if (argc == 4) {
-        length = stringToDouble(argv[2]);
-        width = stringToDouble(argv[3]);
-    } else {
-        cout << "Enter length and width of the rectangle: ";
-        cin >> length >> width;
+// Function to convert Decimal to Binary
+int decimalToBinary(int decimal) {
+    int binary = 0, base = 1;
+
+    while (decimal > 0) {
+        int remainder = decimal % 2; // Find remainder (binary digit)
+        binary += remainder * base; // Add to the binary value
+        base *= 10;                 // Increment base (10^n for binary)
+        decimal /= 2;               // Update the decimal number
     }
-    cout << "Area of the rectangle: " << length * width << endl;
+
+    return binary;
 }
 
-// Function to handle square area calculation
-void calculateSquare(int argc, char* argv[]) {
-    double side;
-    if (argc == 3) {
-        side = stringToDouble(argv[2]);
-    } else {
-        cout << "Enter the side of the square: ";
-        cin >> side;
+// Function to convert Octal to Decimal
+int octalToDecimal(int octal) {
+    int decimal = 0, base = 1;
+
+    while (octal > 0) {
+        int lastDigit = octal % 10; // Extract the last digit
+        decimal += lastDigit * base; // Add to the decimal value
+        base *= 8;                   // Increment the base (8^n)
+        octal /= 10;                 // Remove the last digit
     }
-    cout << "Area of the square: " << side * side << endl;
+
+    return decimal;
 }
 
-// Function to handle circle area calculation
-void calculateCircle(int argc, char* argv[]) {
-    const double PI = 3.14159;
-    double radius;
-    if (argc == 3) {
-        radius = stringToDouble(argv[2]);
-    } else {
-        cout << "Enter the radius of the circle: ";
-        cin >> radius;
+// Function to convert Decimal to Octal
+int decimalToOctal(int decimal) {
+    int octal = 0, base = 1;
+
+    while (decimal > 0) {
+        int remainder = decimal % 8; // Find remainder (octal digit)
+        octal += remainder * base;  // Add to the octal value
+        base *= 10;                 // Increment base (10^n for octal)
+        decimal /= 8;               // Update the decimal number
     }
-    cout << "Area of the circle: " << PI * radius * radius << endl;
+
+    return octal;
 }
 
-// Function to display the menu and call appropriate shape functions
-void displayMenu() {
-    int choice;
-    cout << "Select a shape to calculate the area:\n";
-    cout << "1. Triangle\n2. Rectangle\n3. Square\n4. Circle\n";
-    cout << "Enter your choice: ";
+int main() {
+    int choice, number;
+
+    cout << "Conversion Menu:\n";
+    cout << "1. Binary to Decimal\n";
+    cout << "2. Decimal to Binary\n";
+    cout << "3. Octal to Decimal\n";
+    cout << "4. Decimal to Octal\n";
+    cout << "Enter your choice (1-4): ";
     cin >> choice;
+
+    cout << "Enter the number: ";
+    cin >> number;
 
     switch (choice) {
         case 1:
-            calculateTriangle(0, nullptr); // Pass dummy arguments for menu mode
+            cout << "Binary to Decimal: " << binaryToDecimal(number) << endl;
             break;
         case 2:
-            calculateRectangle(0, nullptr); // Pass dummy arguments for menu mode
+            cout << "Decimal to Binary: " << decimalToBinary(number) << endl;
             break;
         case 3:
-            calculateSquare(0, nullptr); // Pass dummy arguments for menu mode
+            cout << "Octal to Decimal: " << octalToDecimal(number) << endl;
             break;
         case 4:
-            calculateCircle(0, nullptr); // Pass dummy arguments for menu mode
+            cout << "Decimal to Octal: " << decimalToOctal(number) << endl;
             break;
         default:
             cout << "Invalid choice!" << endl;
     }
-}
 
-int main(int argc, char* argv[]) {
-    if (argc > 1) {
-        string shape = argv[1];
-        if (shape == "triangle") {
-            calculateTriangle(argc, argv);
-        } else if (shape == "rectangle") {
-            calculateRectangle(argc, argv);
-        } else if (shape == "square") {
-            calculateSquare(argc, argv);
-        } else if (shape == "circle") {
-            calculateCircle(argc, argv);
-        } else {
-            cout << "Invalid shape or insufficient arguments!" << endl;
-            cout << "Usage: ./program <shape> <parameters...>" << endl;
-        }
-    } else {
-        displayMenu(); // Run menu-based input mode
-    }
     return 0;
-}
